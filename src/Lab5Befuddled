@@ -1,0 +1,8 @@
+// Query 1
+db.fudd.aggregate({"$group":{"_id":"$user", "totalGames":{"$sum":{"$cond":[{"$eq":["$action.actionNumber", 1]}, 1, 0]}}, "won":{"$sum":{"$cond":[{"$eq":["$action.gameStatus", "Win"]}, 1, 0]}}, "lost":{"$sum":{"$cond":[{"$eq":["$action.gameStatus", "Loss"]}, 1, 0]}}}}, {"$project": {"_id":0,"user":"$_id", "totalGames":1, "won":1, "lost":1}})
+
+// Query 2
+db.fudd.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5})
+
+// Query 3 NOT DONE
+db.fudd.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5}, {"$group":{"_id":"$game"}}, {"$project":{"_id":0, "game":"$_id"}})
