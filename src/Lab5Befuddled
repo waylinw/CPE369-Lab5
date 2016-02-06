@@ -6,9 +6,10 @@ db.fudd.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5})
 
 // Query 3 NOT DONE
 // needs to limit to games of top 5 moves 
-db.fudd.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5}, {"$group": {"_id":"$game", "user":{"$last":"$user"}, "score":{"$last": "$action.points"}}}, {"$project": {"_id": 0, "game":"$_id", "user":1, "score":1}})
-
 db.fudd.aggregate({"$group": {"_id":"$game", "user":{"$last":"$user"}, "score":{"$last": "$action.points"}}}, {"$project": {"_id": 0, "game":"$_id", "user":1, "score":1}})
+
+// doesn't get the correct last action
+//db.fudd.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5}, {"$group": {"_id":"$game", "user":{"$last":"$user"}, "score":{"$last": "$action.points"}}}, {"$project": {"_id": 0, "game":"$_id", "user":1, "score":1}})
 
 // Query 4
 db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {$group : {"_id" :"$action.location", ct: {$sum :1}}}, {$sort: {ct: -1}}, {$limit: 10}, {$project : {"location":"$_id", "frequency": "$ct", _id:0}}).pretty()
@@ -18,9 +19,8 @@ db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {$group : {"_id" :"$
 db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {"$group":{"_id":"$game", "user": {"$last":"$user"},"score":{"$last": "$action.points"}, 
 "move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
 
-
-// Query 5 needs to remove non-regular moves and set moves to null for edge case
-db.fudd.aggregate({"$group":{"_id":"$game", "user": {"$last":"$user"},
-"score": {"$last": {"$ifNull":["$action.points", 0]}}, 
-"move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
+//needs to remove non-regular moves and set moves to null for edge case
+//db.fudd.aggregate({"$group":{"_id":"$game", "user": {"$last":"$user"},
+//"score": {"$last": {"$ifNull":["$action.points", 0]}}, 
+//"move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
 
