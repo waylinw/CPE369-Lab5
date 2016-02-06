@@ -16,11 +16,8 @@ db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {$group : {"_id" :"$
 
 // Query 5 NOT DONE
 // ignores edge case
-db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {"$group":{"_id":"$game", "user": {"$last":"$user"},"score":{"$last": "$action.points"}, 
-"move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
+db.fudd.aggregate({"$match":{"action.actionType": "Move"}}, {"$group":{"_id":"$game", "user": {"$last":"$user"},"score":{"$last": "$action.points"}, "move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
 
 //needs to remove non-regular moves and set moves to null for edge case
-//db.fudd.aggregate({"$group":{"_id":"$game", "user": {"$last":"$user"},
-//"score": {"$last": {"$ifNull":["$action.points", 0]}}, 
-//"move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
+//db.fudd.aggregate({"$group":{"_id":"$game", "user": {"$last":"$user"}, "score": {"$last": {"$ifNull":["$action.points", 0]}}, "move": {"$addToSet":{"location":"$action.location", "actionNumber":"$action.actionNumber"}}}}).pretty()
 
