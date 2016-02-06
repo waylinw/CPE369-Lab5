@@ -3,11 +3,15 @@
 //BeFuddled Dataset
 
 //Query 1
+db.beFuddledTest.aggregate({"$group":{"_id":"$user", "totalGames":{"$sum":{"$cond":[{"$eq":["$action.actionNumber", 1]}, 1, 0]}}, "won":{"$sum":{"$cond":[{"$eq":["$action.gameStatus", "Win"]}, 1, 0]}}, "lost":{"$sum":{"$cond":[{"$eq":["$action.gameStatus", "Loss"]}, 1, 0]}}}}, {"$project": {"_id":0,"user":"$_id", "totalGames":1, "won":1, "lost":1}})
 
 //Query 2
+db.beFuddledTest.aggregate({"$sort":{"action.pointsAdded": -1}}, {"$limit":5})
 
 //Query 3
 
+
 //Query 4
+db.beFuddledTest.aggregate({$group : {"_id" :"$action.location", ct: {$sum :1}}}, {$sort: {ct: -1}}, {$limit: 10}, {$project : {"location":"$_id", "frequency": "$ct", _id:0}}).pretty()
 
 //Query 5
